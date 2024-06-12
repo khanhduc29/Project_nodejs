@@ -1,0 +1,129 @@
+
+
+
+{{!-- confirm delete --}} 
+
+<div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa Sản phẩm</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa sản phẩm này</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Hủy</button>
+        <button  id="btn-delete-course" type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- delete form --}}
+ <form name="delete-course-form" method="POST"></form>
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var courseId;
+    var deleteForm = document.forms['delete-course-form'];
+
+    //khi dialog confirm click
+    $('#delete-course-modal').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget)
+      courseId = button.data('id')
+    
+    });
+
+    var btnDeleteCourse = document.getElementById('btn-delete-course')
+
+    btnDeleteCourse.onclick = function() {
+  
+      deleteForm.action = '/courses/' + courseId + '?_method=DELETE';
+      
+     
+         deleteForm.submit()
+         alert('Xóa thành công!')
+      
+
+    
+    
+       
+     
+    }
+
+  });
+</script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-3">
+  
+ 
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <br>
+  <table class="table ">
+   
+  <thead>
+    <tr>
+        <th scope="col">IMG</th>
+      <th scope="col">Name</th>
+      <th scope="col">Gia</th>
+      <th scope="col">Slug</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    {{#each courses}}
+    <tr>
+      <td class="card" style="width: 18rem;">
+         <img class="card-img-top" src="../../img/{{this.img}}" alt="Card image cap">
+      </td>
+     
+      <td>{{this.name}}</td>
+      <td>{{this.gia}}</td>
+      <td>{{this.slug}}</td>
+      <td>
+         <a href="" class="btn btn-warning" >Mua</a>
+        <a href="/courses/{{this._id}}/edit" class="btn btn-primary" >Sửa</a>
+        <a href=""   class="btn btn-danger" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-course-modal">Xóa</a>
+      </td>
+
+      </td>
+    </tr>
+  
+    {{/each}}
+  </tbody>
+</table>
+ 
+</div>
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
+</body>
+{{!-- </html> --}}

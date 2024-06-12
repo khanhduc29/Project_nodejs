@@ -1,0 +1,63 @@
+
+<div class="mt-4">
+    <h3>Thêm sản phẩm</h3>
+
+    <form method="POST" action="/courses/store">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" id="name">
+        </div>
+        {{!-- <div class="form-group">
+            <label for="img">img</label>
+            <input type="file" class="form-control" name="img" id="img">
+            <img src="../../img/{{this.img}} " alt="" class="card-img-top">
+           
+        </div> --}}
+         <div class="form-group">
+            <label for="img">img</label>
+            <input type="file" class="form-control" name="img" id="img-input">
+            <img id="selected-img" alt="" class="card-img-top">
+        </div>
+        <div class="form-group">
+            <label for="gia">Giá</label>
+            <input type="text" class="form-control" name="gia" id="gia">
+        </div>
+        <div class="form-group">
+            <label for="slug">slug</label>
+            <input type="text" class="form-control" name="slug" id="slug">
+        </div>
+        {{!-- <button type="submit" class="btn btn-primary">Thêm</button> --}}
+      <button type="submit" class="btn btn-primary" onclick="saveImageName()">Thêm</button>
+    </form>
+</div>
+
+<script>
+    var imageName = null; // Biến lưu trữ tên tệp tin ảnh
+
+    // Lắng nghe sự kiện khi người dùng chọn tệp tin ảnh
+    document.getElementById('img-input').addEventListener('change', function(e) {
+        // Kiểm tra xem người dùng đã chọn tệp tin ảnh hay chưa
+        if (e.target.files && e.target.files[0]) {
+            // Gán tên tệp tin ảnh vào biến imageName
+            imageName = e.target.files[0].name;
+            
+            // Tạo đối tượng FileReader để đọc tệp tin ảnh
+            var reader = new FileReader();
+            
+            // Xử lý sự kiện khi đọc tệp tin ảnh hoàn tất
+            reader.onload = function (e) {
+                // Gán đường dẫn của ảnh vào thuộc tính src của thẻ img
+                document.getElementById('selected-img').src = e.target.result;
+            };
+            
+            // Đọc tệp tin ảnh dưới dạng URL dữ liệu
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+
+    // Hàm được gọi khi nhấn nút "Thêm" để lưu tên tệp tin ảnh
+    function saveImageName() {
+        // Gán giá trị của biến imageName vào trường ẩn trong form
+        document.getElementById('img-name-input').value = imageName;
+    }
+</script>
